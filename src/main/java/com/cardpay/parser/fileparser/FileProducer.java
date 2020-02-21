@@ -16,10 +16,13 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class FileProducer {
     private final static Logger LOGGER = LoggerFactory.getLogger(FileProducer.class);
-    @Autowired
-    private ParserFactory parserFactory;
+    private final ParserFactory parserFactory;
     @Resource(name = "orderQueue")
     private BlockingQueue<Order> queue;
+
+    public FileProducer(ParserFactory parserFactory) {
+        this.parserFactory = parserFactory;
+    }
 
     @Async
     public CompletableFuture<Void> startForFile(File file) {

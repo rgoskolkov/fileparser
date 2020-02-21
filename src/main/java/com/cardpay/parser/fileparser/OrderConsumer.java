@@ -15,12 +15,15 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class OrderConsumer {
     private final static Logger LOGGER = LoggerFactory.getLogger(OrderConsumer.class);
-    @Autowired
-    private OrderWriter writer;
+    private final OrderWriter writer;
+    private final Order poisonOrder;
     @Resource(name = "orderQueue")
     private BlockingQueue<Order> orderQueue;
-    @Autowired
-    private Order poisonOrder;
+
+    public OrderConsumer(OrderWriter writer, Order poisonOrder) {
+        this.writer = writer;
+        this.poisonOrder = poisonOrder;
+    }
 
     @Async
     public CompletableFuture<Void> start() {
